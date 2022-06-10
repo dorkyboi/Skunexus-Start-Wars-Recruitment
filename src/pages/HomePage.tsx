@@ -4,6 +4,7 @@ import {useGetPlanetsQuery} from "../store/apis/planetsApi";
 import {Planet} from "../entities/planet";
 import {useNavigate} from "react-router-dom";
 import linkTo from "../router/linkTo";
+import extractId from "../helpers/extractId";
 
 function HomePage() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ function HomePage() {
             {
                 label: 'Go to Films',
                 action: (row) => {
-                    navigate(linkTo('PlanetFilms', {id: row.url.charAt(row.url.length - 2)}));
+                    navigate(linkTo('PlanetFilms', {id: extractId(row)}));
                 },
             },
             {

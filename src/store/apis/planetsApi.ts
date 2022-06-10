@@ -3,7 +3,7 @@ import {Planet} from "../../entities/planet";
 import {PaginatedResult} from "../../types/PaginatedResult";
 
 export const planetsApi = createApi({
-    reducerPath: 'planet',
+    reducerPath: 'planets',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://swapi.dev/api/planets/',
     }),
