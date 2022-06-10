@@ -26,15 +26,15 @@ function HomePage() {
         actions: [
             {
                 label: 'Go to Films',
-                action: (row) => {
-                    navigate(linkTo('PlanetFilms', {id: extractId(row)}));
-                },
+                action: planet => navigate(linkTo('PlanetFilms', {id: extractId(planet)})),
+                visible: planet => !!planet.films.length,
             },
             {
                 label: 'Go to Residents',
-                action: (row) => {
-                    console.log(`redirect to grid with ${row.residents.length} Residents`);
+                action: (planet) => {
+                    console.log(`redirect to grid with ${planet.residents.length} Residents`);
                 },
+                visible: planet => !!planet.residents.length,
             },
         ],
     };

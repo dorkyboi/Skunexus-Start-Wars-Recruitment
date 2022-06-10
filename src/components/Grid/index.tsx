@@ -6,6 +6,7 @@ export interface GridData<T> {
     actions: {
         label: string,
         action: (row: T) => any,
+        visible?: boolean | ((row: T) => boolean),
     }[],
 }
 
@@ -24,11 +25,16 @@ function Grid<T extends {[key: string]: any}>({data: {header = [], values = [], 
                         {header.map(colName => <td key={colName}>{row[colName]}</td>)}
                         {!!actions.length && (
                             <td className='gridActions'>
-                                {actions.map(({label, action}) => (
-                                    <button onClick={() => action(row)}>
-                                        {label}
-                                    </button>
-                                ))}
+                                {actions.map(({label, action, visible}) => {
+                                    if (visible === false || (typeof visible === 'function' && !visible(row)))
+                                        return null;
+
+                                    return (
+                                        <button onClick={() => action(row)}>
+                                            {label}
+                                        </button>
+                                    );
+                                })}
                             </td>
                         )}
                     </tr>
