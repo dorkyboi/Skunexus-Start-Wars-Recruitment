@@ -2,13 +2,20 @@ import React from "react";
 import Grid, {GridData} from "../components/Grid";
 import {useGetPlanetsQuery} from "../store/apis/planetsApi";
 import {Planet} from "../entities/planet";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import linkTo from "../router/linkTo";
 import extractId from "../helpers/extractId";
+import PlanetEditModal from "../components/PlanetEditModal";
 
 function HomePage() {
     const navigate = useNavigate();
-    const {data} = useGetPlanetsQuery();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const {data, planet} = useGetPlanetsQuery(undefined, {
+        selectFromResult: data => ({
+            ...data,
+            planet: data.currentData?.results.find(planet => extractId(planet) === searchParams.get('edit')),
+        }),
+    });
 
     const gridData: GridData<Planet> = {
         header: [
@@ -27,7 +34,10 @@ function HomePage() {
             {
                 label: 'Details',
                 action: planet => navigate(linkTo('PlanetDetails', {planetId: extractId(planet)})),
-                visible: planet => !!planet.films.length,
+            },
+            {
+                label: 'Edit',
+                action: planet => setSearchParams({edit: extractId(planet)}),
             },
             {
                 label: 'Films',
@@ -42,10 +52,17 @@ function HomePage() {
         ],
     };
 
+    const closeModal = () => setSearchParams({});
+
     return (
         <>
             <h1 className={"text-center"}>Star Wars Planets</h1>
             <Grid data={gridData}/>
+
+            <PlanetEditModal
+                planet={planet}
+                toggle={closeModal}
+            />
         </>
     );
 }
