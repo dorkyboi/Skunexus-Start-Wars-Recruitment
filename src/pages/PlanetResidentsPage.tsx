@@ -3,11 +3,19 @@ import {useGetPlanetsQuery} from "../store/apis/planetsApi";
 import {useParams} from "react-router-dom";
 import {PageParams} from "../router/PageParams";
 import extractId from "../helpers/extractId";
-import Grid, {GridData} from "../components/Grid";
+import Grid from "../components/Grid";
 import {useGetResidentsQuery} from "../store/apis/residentsApi";
 import {skipToken} from "@reduxjs/toolkit/query";
 import Loading from "../components/IconViews/Loading";
 import {Resident} from "../entities/residents";
+
+const Headers: (keyof Resident)[] = [
+    'name',
+    'birth_year',
+    'height',
+    'mass',
+    'homeworld',
+];
 
 function PlanetResidentsPage() {
     const {planetId} = useParams<PageParams['PlanetResidents']>();
@@ -25,18 +33,7 @@ function PlanetResidentsPage() {
     if (!planet || !residents?.length)
         return null;
 
-    const data: GridData<Resident> = {
-        header: [
-            'name',
-            'birth_year',
-            'height',
-            'mass',
-            'homeworld',
-        ],
-        values: residents,
-    };
-
-    return <Grid data={data}/>;
+    return <Grid header={Headers} values={residents}/>;
 }
 
 export default PlanetResidentsPage;

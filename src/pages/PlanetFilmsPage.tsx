@@ -5,9 +5,16 @@ import {PageParams} from "../router/PageParams";
 import extractId from "../helpers/extractId";
 import {useGetFilmsQuery} from "../store/apis/filmsApi";
 import {skipToken} from "@reduxjs/toolkit/query";
-import Grid, {GridData} from "../components/Grid";
+import Grid from "../components/Grid";
 import {Film} from "../entities/film";
 import Loading from "../components/IconViews/Loading";
+
+const Headers: (keyof Film)[] = [
+    'title',
+    'producer',
+    'director',
+    'episode_id',
+];
 
 function PlanetFilmsPage() {
     const {planetId} = useParams<PageParams['PlanetFilms']>();
@@ -25,17 +32,7 @@ function PlanetFilmsPage() {
     if (!planet || !films?.length)
         return null;
 
-    const data: GridData<Film> = {
-        header: [
-            'title',
-            'producer',
-            'director',
-            'episode_id',
-        ],
-        values: films,
-    };
-
-    return <Grid data={data}/>;
+    return <Grid header={Headers} values={films}/>;
 }
 
 export default PlanetFilmsPage;
