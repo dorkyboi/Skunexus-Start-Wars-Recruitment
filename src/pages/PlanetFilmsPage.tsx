@@ -17,7 +17,7 @@ function PlanetFilmsPage() {
             planet: data.currentData?.results.find(planet => extractId(planet) === planetId),
         }),
     });
-    const {data: films, isLoading} = useGetFilmsQuery(planet ? planet.residents : skipToken);
+    const {data: films, isLoading} = useGetFilmsQuery(planet ? planet.films : skipToken);
 
     if (isLoading || loadingPlanet)
         return <Loading/>;
