@@ -31,7 +31,10 @@ function Grid<T extends {[key: string]: any}>({
                 {values.map((row, index) => (
                     <tr key={index}>
                         {header.map(colName => (
-                            <td key={!keyExtractor ? colName : (typeof keyExtractor === 'string' ? row[keyExtractor] : keyExtractor(row))}>
+                            <td
+                                key={!keyExtractor ? colName : (typeof keyExtractor === 'string' ? row[keyExtractor] : keyExtractor(row))}
+                                className={isNaN(row[colName]) ? undefined : 'text-end'}
+                            >
                                 {row[colName]}
                             </td>
                         ))}
