@@ -25,12 +25,17 @@ function HomePage() {
         values: data?.results || [],
         actions: [
             {
-                label: 'Go to Films',
+                label: 'Details',
+                action: planet => navigate(linkTo('PlanetDetails', {planetId: extractId(planet)})),
+                visible: planet => !!planet.films.length,
+            },
+            {
+                label: 'Films',
                 action: planet => navigate(linkTo('PlanetFilms', {planetId: extractId(planet)})),
                 visible: planet => !!planet.films.length,
             },
             {
-                label: 'Go to Residents',
+                label: 'Residents',
                 action: (planet) => navigate(linkTo('PlanetResidents', {planetId: extractId(planet)})),
                 visible: planet => !!planet.residents.length,
             },
