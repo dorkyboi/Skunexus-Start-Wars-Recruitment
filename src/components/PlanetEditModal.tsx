@@ -103,12 +103,11 @@ function PlanetEditModal({planet, toggle}: Props) {
                         </>
                     ) : undefined;
                     return (
-                        <>
+                        <React.Fragment key={config.name}>
                             <Label for={config.name}>
                                 {config.name}
                             </Label>
                             <Input
-                                key={config.name}
                                 className={'mb-3'}
                                 value={data?.[config.name]}
                                 id={config.name}
@@ -117,7 +116,7 @@ function PlanetEditModal({planet, toggle}: Props) {
                                 invalid={!data?.[config.name]}
                                 {...config}
                             />
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </ModalBody>
