@@ -17,7 +17,11 @@ const Headers: (keyof Planet)[] = [
     'terrain',
     'surface_water',
     'population',
+    'residents',
+    'films',
 ];
+
+const renderer = ({item, column}: {item: Planet, column: keyof Planet}) => item[column].length;
 
 function HomePage() {
     const navigate = useNavigate();
@@ -37,6 +41,10 @@ function HomePage() {
             <Grid
                 header={Headers}
                 values={data?.results || []}
+                cellRenderers={{
+                    residents: renderer,
+                    films: renderer,
+                }}
                 actions={[
                     {
                         label: 'Details',

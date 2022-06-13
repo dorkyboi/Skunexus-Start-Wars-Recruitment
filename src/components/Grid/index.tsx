@@ -1,13 +1,17 @@
 import './Grid.css';
+import {ReactNode} from "react";
 
 interface Props<T> {
     header: Extract<keyof T, string>[],
     values: T[],
     actions?: {
         label: string,
-        action: (row: T) => any,
-        visible?: boolean | ((row: T) => boolean),
+        action: (item: T) => any,
+        visible?: boolean | ((item: T) => boolean),
     }[],
+    cellRenderers?: {
+        [key in keyof T]?: ({item, index, column}: {item: T, index: number, column: Extract<keyof T, string>}) => ReactNode
+    },
     keyExtractor?: Extract<keyof T, string> | ((item: T) => string),
     hideActions?: boolean,
 }
@@ -18,6 +22,7 @@ function Grid<T extends {[key: string]: any}>({
     actions = [],
     keyExtractor,
     hideActions,
+    cellRenderers = {},
 }: Props<T>) {
     return (
         <table className='gridTable'>
@@ -30,14 +35,20 @@ function Grid<T extends {[key: string]: any}>({
             <tbody>
                 {values.map((row, index) => (
                     <tr key={index}>
-                        {header.map(colName => (
-                            <td
-                                key={!keyExtractor ? colName : (typeof keyExtractor === 'string' ? row[keyExtractor] : keyExtractor(row))}
-                                className={isNaN(row[colName]) ? undefined : 'text-end'}
-                            >
-                                {row[colName]}
-                            </td>
-                        ))}
+                        {header.map(colName => {
+                            const value = colName in cellRenderers
+                                ? cellRenderers[colName]?.({item: row, index, column: colName})
+                                : row[colName];
+
+                            return (
+                                <td
+                                    key={!keyExtractor ? colName : (typeof keyExtractor === 'string' ? row[keyExtractor] : keyExtractor(row))}
+                                    className={isNaN(value as any) ? undefined : 'text-end'}
+                                >
+                                    {value}
+                                </td>
+                            );
+                        })}
                         {!hideActions && !!actions.length && (
                             <td className='gridActions'>
                                 {actions.map(({label, action, visible}) => {
