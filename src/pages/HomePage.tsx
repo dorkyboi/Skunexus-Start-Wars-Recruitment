@@ -31,9 +31,7 @@ function HomePage() {
             },
             {
                 label: 'Go to Residents',
-                action: (planet) => {
-                    console.log(`redirect to grid with ${planet.residents.length} Residents`);
-                },
+                action: (planet) => navigate(linkTo('PlanetResidents', {planetId: extractId(planet)})),
                 visible: planet => !!planet.residents.length,
             },
         ],

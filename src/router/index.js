@@ -1,15 +1,17 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
+import linkTo from "./linkTo";
 import NotFoundPage from '../components/NotFoundPage';
 import HomePage from "../pages/HomePage";
 import PlanetFilmsPage from "../pages/PlanetFilmsPage";
-import linkTo from "./linkTo";
+import PlanetResidentsPage from "../pages/PlanetResidentsPage";
 
 const Router = () => {
     return (
         <Routes>
             <Route path={linkTo('Home')} element={<HomePage/>}/>
             <Route path={linkTo('PlanetFilms')} element={<PlanetFilmsPage/>}/>
+            <Route path={linkTo('PlanetResidents')} element={<PlanetResidentsPage/>}/>
             <Route element={NotFoundPage}/>
         </Routes>
     );

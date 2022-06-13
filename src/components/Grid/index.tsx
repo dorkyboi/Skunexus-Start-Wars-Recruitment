@@ -30,7 +30,7 @@ function Grid<T extends {[key: string]: any}>({data: {header = [], values = [], 
                                         return null;
 
                                     return (
-                                        <button onClick={() => action(row)}>
+                                        <button key={label} onClick={() => action(row)}>
                                             {label}
                                         </button>
                                     );
