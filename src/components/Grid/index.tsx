@@ -3,7 +3,7 @@ import './Grid.css';
 export interface GridData<T> {
     header: Extract<keyof T, string>[],
     values: T[],
-    actions: {
+    actions?: {
         label: string,
         action: (row: T) => any,
         visible?: boolean | ((row: T) => boolean),

@@ -6,7 +6,6 @@ import extractId from "../helpers/extractId";
 import Grid, {GridData} from "../components/Grid";
 import {useGetResidentsQuery} from "../store/apis/residentsApi";
 import {skipToken} from "@reduxjs/toolkit/query";
-import Warn from "../components/IconViews/Warn";
 import Loading from "../components/IconViews/Loading";
 import {Resident} from "../entities/residents";
 
@@ -24,7 +23,7 @@ function PlanetResidentsPage() {
         return <Loading/>;
 
     if (!planet || !residents?.length)
-        return <Warn>404</Warn>;
+        return null;
 
     const data: GridData<Resident> = {
         header: [
@@ -35,12 +34,9 @@ function PlanetResidentsPage() {
             'homeworld',
         ],
         values: residents,
-        actions: [],
     };
 
-    return (
-        <Grid data={data}/>
-    );
+    return <Grid data={data}/>;
 }
 
 export default PlanetResidentsPage;

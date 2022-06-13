@@ -1,5 +1,5 @@
 export interface PageParams {
     Home: undefined,
-    PlanetFilms: {id: string},
+    PlanetFilms: {planetId: string},
     PlanetResidents: {planetId: string},
 }

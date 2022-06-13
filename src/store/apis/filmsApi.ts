@@ -8,10 +8,17 @@ export const filmsApi = createApi({
         baseUrl: 'https://swapi.dev/api/films/',
     }),
     endpoints: (build) => ({
-        getFilm: build.query<Film, string>({
-            query: (arg) => Number.isInteger(arg) ? arg : extractId(arg),
+        getFilms: build.query<Film[], string[]>({
+            queryFn: async (urls, _queryApi, _extraOptions, fetchWithBQ) => ({
+                data: await Promise.all(urls.map(url => {
+                    const maybePromise = fetchWithBQ(extractId(url));
+                    if ('then' in maybePromise)
+                        return maybePromise.then(response => response.data);
+                    return maybePromise;
+                })) as Film[]
+            }),
         }),
     }),
 });
 
-export const {useGetFilmQuery} = filmsApi;
+export const {useGetFilmsQuery} = filmsApi;

@@ -26,7 +26,7 @@ function HomePage() {
         actions: [
             {
                 label: 'Go to Films',
-                action: planet => navigate(linkTo('PlanetFilms', {id: extractId(planet)})),
+                action: planet => navigate(linkTo('PlanetFilms', {planetId: extractId(planet)})),
                 visible: planet => !!planet.films.length,
             },
             {

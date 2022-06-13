@@ -3,28 +3,39 @@ import {useGetPlanetsQuery} from "../store/apis/planetsApi";
 import {useParams} from "react-router-dom";
 import {PageParams} from "../router/PageParams";
 import extractId from "../helpers/extractId";
-import FilmCard from "../components/cards/FilmCard";
+import {useGetFilmsQuery} from "../store/apis/filmsApi";
+import {skipToken} from "@reduxjs/toolkit/query";
+import Grid, {GridData} from "../components/Grid";
+import {Film} from "../entities/film";
+import Loading from "../components/IconViews/Loading";
 
 function PlanetFilmsPage() {
-    const {id} = useParams<PageParams['PlanetFilms']>();
-    const {planet, isLoading} = useGetPlanetsQuery(undefined, {
+    const {planetId} = useParams<PageParams['PlanetFilms']>();
+    const {planet, isLoading: loadingPlanet} = useGetPlanetsQuery(undefined, {
         selectFromResult: data => ({
             ...data,
-            planet: data.currentData?.results.find(planet => extractId(planet) === id),
+            planet: data.currentData?.results.find(planet => extractId(planet) === planetId),
         }),
     });
+    const {data: films, isLoading} = useGetFilmsQuery(planet ? planet.residents : skipToken);
 
-    if (isLoading)
-        return 'Loading';
+    if (isLoading || loadingPlanet)
+        return <Loading/>;
 
-    if (!planet)
-        return 404;
+    if (!planet || !films?.length)
+        return null;
 
-    return (
-        <div className={'p-5 grid md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5'}>
-            {planet.films.map(url => <FilmCard key={url} url={url}/>)}
-        </div>
-    );
+    const data: GridData<Film> = {
+        header: [
+            'title',
+            'producer',
+            'director',
+            'episode_id',
+        ],
+        values: films,
+    };
+
+    return <Grid data={data}/>;
 }
 
 export default PlanetFilmsPage;

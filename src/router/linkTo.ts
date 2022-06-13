@@ -2,7 +2,7 @@ import {PageParams} from "./PageParams";
 
 const links: {[key in keyof PageParams]: (params: PageParams[key]) => string} = {
     Home: () => '/',
-    PlanetFilms: ({id= ':id'}) => `/planet/${id}/films`,
+    PlanetFilms: ({planetId= ':planetId'}) => `/planet/${planetId}/films`,
     PlanetResidents: ({planetId = ':planetId'}) => `/planet/${planetId}/residents`,
 };
 
